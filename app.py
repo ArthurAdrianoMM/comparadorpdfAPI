@@ -17,10 +17,10 @@ def extract_money(pdf_bytes):
     return matches[0] if matches else None
 
 # Cleans ugly number
-def normalize_money(value_str):
-    if not value_str:
+def normalize_money(value_ugly):
+    if not value_ugly:
         return None
-    clean = re.sub(r"[^\d,\.]", "", value_str).replace('.', '').replace(',', '.')
+    clean = re.sub(r"[^\d,\.]", "", value_ugly).replace('.', '').replace(',', '.')
     try:
         return float(clean)
     except ValueError:
@@ -43,17 +43,17 @@ async def compare_values(file1: UploadFile = File(...), file2: UploadFile = File
     pdf1_bytes = await file1.read()
     pdf2_bytes = await file2.read()
 
-    value1_str = extract_money(pdf1_bytes)
-    value2_str = extract_money(pdf2_bytes)
+    value1_ugly = extract_money(pdf1_bytes)
+    value2_ugly = extract_money(pdf2_bytes)
 
-    value1 = normalize_money(value1_str)
-    value2 = normalize_money(value2_str)
+    value1 = normalize_money(value1_ugly)
+    value2 = normalize_money(value2_ugly)
 
     result = compare_numbers(value1, value2)
 
     return {
-        "value1_raw": value1_str,
-        "value2_raw": value2_str,
+        "value1_raw": value1_ugly,
+        "value2_raw": value2_ugly,
         "value1_normalized": value1,
         "value2_normalized": value2,
         "comparison": result
