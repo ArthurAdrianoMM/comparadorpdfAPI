@@ -10,10 +10,12 @@ def extract_money(pdf_bytes):
     text = ""
     for page in doc:
         text += page.get_text()
-    # debugging - reading ok till here
-    matches = re.findall(r"R?\$?\s?\d{1,3}(?:\.\d{3})*(?:,\d{2})|\d+,\d{2}", text)
-    print("MATCHES ENCONTRADOS:", matches) # debugging matches
-    return matches[0] if matches else None
+
+    print("TEXT found:\n", text)
+    matches = re.findall(r"R?\$?\s?\d{1,3}(?:\.\d{3})*(?:,\d{2})?|\d+(?:,\d{2})?", text)
+    print("MATCHES found:", matches)
+
+    return matches[0] if matches else "⚠️ No values found "
 
 @app.post("/comparar-valores")
 async def comparar_valores(file1: UploadFile = File(...), file2: UploadFile = File(...)):
