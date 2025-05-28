@@ -10,8 +10,9 @@ def extract_money(pdf_bytes):
     text = ""
     for page in doc:
         text += page.get_text()
-    print("TEXTO PDF:\n", text) # debugging
-    matches = re.findall(r"R?\$?\s?\d{1,3}(?:\.\d{3})*,\d{2}", text)
+    # debugging - reading ok till here
+    matches = re.findall(r"R?\$?\s?\d{1,3}(?:\.\d{3})*(?:,\d{2})|\d+,\d{2}", text)
+    print("MATCHES ENCONTRADOS:", matches) # debugging matches
     return matches[0] if matches else None
 
 @app.post("/comparar-valores")
