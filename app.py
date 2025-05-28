@@ -10,6 +10,7 @@ def extract_money(pdf_bytes):
     text = ""
     for page in doc:
         text += page.get_text()
+    print("TEXTO PDF:\n", text) # debugging
     matches = re.findall(r"R?\$?\s?\d{1,3}(?:\.\d{3})*,\d{2}", text)
     return matches[0] if matches else None
 
